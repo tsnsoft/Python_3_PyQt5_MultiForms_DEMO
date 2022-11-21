@@ -59,6 +59,8 @@ class Form2(QtWidgets.QMainWindow):
         self.btn_back.clicked.connect(self.back)
         self.btn_next.clicked.connect(self.next)
 
+        self.onToggled(self.radioButton_1)
+
     def onToggled(self, radiobutton):
         if radiobutton.isChecked():
             answers[0] = radiobutton.text()
@@ -87,13 +89,16 @@ class Form3(QtWidgets.QMainWindow):
         if answers[1] is not None:
             self.label_selected.setText('Выбрано: ' + answers[1])
 
-        self.listWidget.itemClicked.connect(self.item_click)
+        self.listWidget.clicked.connect(self.listWidget_clicked)
         self.btn_back.clicked.connect(self.back)
         self.btn_next.clicked.connect(self.next)
 
-    def item_click(self, item):
-        answers[1] = item.text()
-        self.label_selected.setText('Выбрано: ' + answers[1])
+        self.listWidget.setCurrentRow(0)
+        self.listWidget_clicked()
+
+    def listWidget_clicked(self):
+       answers[1] = self.listWidget.currentItem().text()
+       self.label_selected.setText('Выбрано: ' + answers[1])
 
     def back(self):
         self.switch_window.emit('2<3')
@@ -121,6 +126,8 @@ class Form4(QtWidgets.QMainWindow):
         self.comboBox.activated.connect(self.handleActivated)
         self.btn_back.clicked.connect(self.back)
         self.btn_next.clicked.connect(self.next)
+
+        self.handleActivated(0)
 
     def handleActivated(self, index):
         answers[2] = self.comboBox.itemText(index)
